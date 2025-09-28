@@ -29,9 +29,9 @@ export async function createPlayer({
   surname,
   email,
   phone_number,
-  q1,
-  q2,
-  q3,
+  a1,
+  a2,
+  a3,
 }) {
   const payload = {
     name: (name ?? "").trim(),
@@ -39,9 +39,10 @@ export async function createPlayer({
     email: (email ?? "").trim().toLowerCase(),
   };
   if (phone_number != null) payload.phone_number = String(phone_number).trim();
-  if (q1 != null) payload.q1 = String(q1).trim();
-  if (q2 != null) payload.q2 = String(q2).trim();
-  if (q3 != null) payload.q3 = String(q3).trim();
+  if (phone_number == null) payload.phone_number = "4335213";
+  if (a1 != null) payload.a1 = String(a1).trim();
+  if (a2 != null) payload.a2 = String(a2).trim();
+  if (a3 != null) payload.a3 = String(a3).trim();
 
   const { data, error } = await supabase
     .from("players")
@@ -71,7 +72,7 @@ export async function upsertPlayerByEmail({
     name: (name ?? "").trim(),
     surname: (surname ?? "").trim(),
     email: (email ?? "").trim().toLowerCase(),
-    phone_number: phone_number ?? null,
+    phone_number: phone_number ?? 'asgasgas',
     a1: a1 ?? null,
     a2: a2 ?? null,
     a3: a3 ?? null,

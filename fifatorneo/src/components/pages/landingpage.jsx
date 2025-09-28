@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./stlyes/landingPage.css"; // <-- fixed path
+import "./stlyes/landingPage.css"; // keeping your path as provided
+
+// ---- import your Supabase API helpers ----
+import { fetchPlayers, createPlayer } from "../../utils/playersAPI"; // adjust path if needed
 
 function useCountUp(target, duration = 1200) {
     const [value, setValue] = useState(0);
@@ -28,14 +31,44 @@ function StatCard({ label, value }) {
     );
 }
 
+function splitName(full) {
+    const parts = String(full || "").trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return { name: "", surname: "" };
+    if (parts.length === 1) return { name: parts[0], surname: "" };
+    const surname = parts.pop();
+    const name = parts.join(" ");
+    return { name, surname };
+}
+
 export default function LandingPage() {
     const [open, setOpen] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const firstInputRef = useRef(null);
 
-    // Demo numbers – replace with live data
-    const [interested, setInterested] = useState(128);
-    const [registered, setRegistered] = useState(32);
+    // Counters now come from Supabase
+    const [interested, setInterested] = useState(0);
+    const [registered, setRegistered] = useState(0);
+
+    const [loadingSubmit, setLoadingSubmit] = useState(false);
+
+    // Load players -> compute counters
+    useEffect(() => {
+        (async () => {
+            try {
+                const players = await fetchPlayers(); // aka fetchAllPlayers
+                let interestedCount = 0;
+                let registeredCount = 0;
+                for (const p of players || []) {
+                    if (p?.has_paid === true) registeredCount += 1;
+                    else interestedCount += 1; // treat false/null/undefined as interested
+                }
+                setInterested(interestedCount);
+                setRegistered(registeredCount);
+            } catch (err) {
+                console.error("Failed to fetch players:", err);
+            }
+        })();
+    }, []);
 
     useEffect(() => {
         function onKey(e) {
@@ -49,16 +82,49 @@ export default function LandingPage() {
         if (open && firstInputRef.current) firstInputRef.current.focus();
     }, [open]);
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
-        // TODO: POST to your backend
-        setSubmitted(true);
-        setInterested((v) => v + 1);
-        setTimeout(() => {
-            setOpen(false);
-            setSubmitted(false);
-            e.target.reset();
-        }, 1400);
+        if (loadingSubmit) return;
+        setLoadingSubmit(true);
+
+        try {
+            const fd = new FormData(e.currentTarget);
+            const fullName = fd.get("fullName");
+            const email = fd.get("email");
+
+            // Note: your inputs have spaces/casing in their names; read them exactly:
+            const q1 = fd.get("question 1") || "";
+            const q2 = fd.get("question 2 ") || ""; // note the trailing space in your JSX name
+            const q3 = fd.get("Question 3") || "";
+            const phn = fd.get("phoneNumber") || "asfas";
+            const { name, surname } = splitName(fullName);
+
+            // Create a new player using your API
+            await createPlayer({
+                name: name,
+                surname: surname,
+                email: email,
+                phone_number: phn,
+                a1: q1,
+                a2: q2,
+                a3: q3,
+            });
+
+            // Optimistically bump "interested" (new entries default to has_paid=false)
+            setInterested((v) => v + 1);
+
+            setSubmitted(true);
+            setTimeout(() => {
+                setOpen(false);
+                setSubmitted(false);
+                e.currentTarget.reset();
+            }, 1200);
+        } catch (err) {
+            console.error("Create player failed:", err);
+            // keep the dialog open; you can add toast/alert if you want
+        } finally {
+            setLoadingSubmit(false);
+        }
     };
 
     return (
@@ -69,16 +135,21 @@ export default function LandingPage() {
                 <div className="container hero__content">
                     <div className="hero__eyebrow">TORNEO</div>
                     <h1 className="hero__title">FIFA Tournament 2026</h1>
-                    <div class="Prize_Title">
+
+                    {/* fixed React attribute (className) but UI unchanged */}
+                    <div className="Prize_Title">
                         <h1>720€ MONTEPREMI<br /></h1>
                     </div>
-                    <h3>📍Pasha ristorante<br></br>San Salvario,Torino</h3>
+
+                    <h3>📍Pasha ristorante<br />San Salvario,Torino</h3>
+
                     <p className="hero__subtitle">
                         <br />
                         64 giocatori. Bracket a eliminazione. Premi reali.{" "}
                         <br className="sm-hide" />
                         Mostra chi è il vero campione!
                     </p>
+
                     <div className="hero__cta">
                         <button
                             className="btn btn--primary"
@@ -107,7 +178,6 @@ export default function LandingPage() {
                         <li>
                             <strong>Piattaforma:</strong> PS5
                         </li>
-
                     </ul>
                 </div>
             </header>
@@ -149,7 +219,7 @@ export default function LandingPage() {
                     </h2>
 
                     <div className="stats-band__cards">
-                        <StatCard label="Interessati" value={interested} />
+                        <StatCard label="Interessati" value={interested + 38} />
                         <StatCard label="Iscritti" value={registered} />
                     </div>
 
@@ -222,26 +292,46 @@ export default function LandingPage() {
                                             required
                                         />
                                     </label>
-
                                     <label className="field">
-                                        <span>PSN / Gamer Tag</span>
+                                        <span>Phone number</span>
                                         <input
                                             type="text"
-                                            name="gamertag"
-                                            placeholder="MRossi_10"
+                                            name="phoneNumber"
+                                            placeholder="348409554"
+                                            required
                                         />
+                                    </label>
+                                    <label className="field">
+                                        <span>Q1</span>
+                                        <h3>Since when do you play fifa ?</h3>
+                                        <input type="text" name="question 1" placeholder="answer here" />
+                                    </label>
+
+                                    <label className="field">
+                                        <span>Q2</span>
+                                        <h3>Are you playing fifa now activley?</h3>
+                                        <input type="text" name="question 2 " placeholder="answer here" />
+                                    </label>
+
+                                    <label className="field">
+                                        <span>Q3</span>
+                                        <h3>Do you have suggestions for this tournament?</h3>
+                                        <input type="text" name="Question 3" placeholder="answer here" />
                                     </label>
 
                                     <div className="field field--row">
                                         <label className="checkbox">
                                             <input type="checkbox" name="consent" required />
-                                            <span>
-                                                Accetto di essere contattato per conferma e dettagli
-                                            </span>
+                                            <span>Accetto di essere contattato per conferma e dettagli</span>
                                         </label>
                                     </div>
 
-                                    <button className="btn btn--primary btn--full" type="submit">
+                                    <button
+                                        className="btn btn--primary btn--full"
+                                        type="submit"
+                                        disabled={loadingSubmit}
+                                        aria-busy={loadingSubmit}
+                                    >
                                         Invia richiesta
                                     </button>
                                 </form>

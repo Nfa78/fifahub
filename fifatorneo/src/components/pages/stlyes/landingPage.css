@@ -404,20 +404,33 @@ a:hover {
 }
 
 /* ========== Modal ========== */
+/* ========== Modal (scrollable panel) ========== */
 .modal {
     position: fixed;
     inset: 0;
     z-index: 999;
     display: grid;
     place-items: center;
+    padding: 18px;
+    /* gutter around the panel */
     background: rgba(4, 7, 12, .55);
     backdrop-filter: blur(6px);
-    padding: 18px;
+    overflow: hidden;
+    /* keep the overlay fixed; panel will scroll */
 }
 
 .modal__panel {
     position: relative;
     width: min(560px, 100%);
+    max-height: calc(100dvh - 36px);
+    /* ← key: cap height to viewport minus gutters */
+    overflow: auto;
+    /* ← enable scrolling inside the panel */
+    -webkit-overflow-scrolling: touch;
+    /* smooth iOS scroll */
+    overscroll-behavior: contain;
+    /* prevent scroll chaining to page */
+
     background: linear-gradient(180deg, var(--card), #0f1422);
     border: 1px solid rgba(255, 255, 255, .08);
     border-radius: calc(var(--radius) + 2px);
@@ -425,10 +438,16 @@ a:hover {
     padding: 22px;
 }
 
+/* Close button unchanged */
 .modal__close {
-    position: absolute;
-    top: 10px;
-    right: 12px;
+    position: sticky;
+    /* optional: keeps the X visible while scrolling */
+    top: 0;
+    /* stick to the top of the scrolling panel */
+    margin-left: auto;
+    /* keep it on the right */
+    display: block;
+
     font-size: 22px;
     line-height: 1;
     width: 36px;
@@ -443,6 +462,7 @@ a:hover {
 .modal__close:hover {
     background: rgba(255, 255, 255, .1);
 }
+
 
 .muted {
     color: var(--muted);
