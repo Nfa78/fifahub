@@ -1,6 +1,6 @@
-import { useRef } from 'react';
-import Bracket64SplitInteractive from './components/fixtures/bracket64SplitInteractive';
-import LandingPage from './components/pages/landingpage';
+import { useRef } from "react";
+import Bracket64SplitInteractive from "./components/fixtures/bracket64SplitInteractive";
+import LandingPage from "./components/pages/landingpage";
 
 export default function App() {
   const ref = useRef(null);
@@ -12,8 +12,8 @@ export default function App() {
 
   const quickDemo = () => {
     ref.current?.reset();
-    ref.current?.addPlayerAt(0, 'Alex');
-    ref.current?.addPlayerAt(1, 'Sam');
+    ref.current?.addPlayerAt(0, "Alex");
+    ref.current?.addPlayerAt(1, "Sam");
     ref.current?.wonFirstRound(0, 0); // match 0, top wins
   };
 
