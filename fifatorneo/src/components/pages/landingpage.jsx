@@ -70,8 +70,9 @@ export default function LandingPage() {
                     <div className="hero__eyebrow">TORNEO</div>
                     <h1 className="hero__title">FIFA Tournament 2026</h1>
                     <div class="Prize_Title">
-                        <h1>Prize Pool €800<br /></h1>
+                        <h1>720€ MONTEPREMI<br /></h1>
                     </div>
+                    <h3>📍Pasha ristorante<br></br>San Salvario,Torino</h3>
                     <p className="hero__subtitle">
                         <br />
                         64 giocatori. Bracket a eliminazione. Premi reali.{" "}
@@ -98,17 +99,15 @@ export default function LandingPage() {
 
                     <ul className="hero__meta">
                         <li>
-                            <strong>Data:</strong> 12–13 Aprile 2026
+                            <strong>Data:</strong> Novembre 2025
                         </li>
                         <li>
-                            <strong>Formato:</strong> 64 giocatori • Bo1 (finale Bo3)
+                            <strong>Formato:</strong> 64 giocatori
                         </li>
                         <li>
                             <strong>Piattaforma:</strong> PS5
                         </li>
-                        <li>
-                            <strong>Location:</strong> Torino, IT
-                        </li>
+
                     </ul>
                 </div>
             </header>

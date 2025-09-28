@@ -184,12 +184,13 @@ a:hover {
 }
 
 .list {
-    margin: 0;
-    padding-left: 18px;
+    margin: 10;
+    padding-left: 28px;
 }
 
 .list li {
     margin: 6px 0;
+    padding: 5px;
     color: var(--muted);
 }
 
