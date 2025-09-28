@@ -1,13 +1,42 @@
-import React, { useState, useRef, useEffect } from "react";
-import "./stlyes/landingPage.css";
+import React, { useEffect, useRef, useState } from "react";
+import "./stlyes/landingPage.css"; // <-- fixed path
+
+function useCountUp(target, duration = 1200) {
+    const [value, setValue] = useState(0);
+    useEffect(() => {
+        const start = performance.now();
+        let raf = 0;
+        const tick = (t) => {
+            const p = Math.min(1, (t - start) / duration);
+            const eased = 1 - Math.pow(1 - p, 3);
+            setValue(Math.round(eased * target));
+            if (p < 1) raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(raf);
+    }, [target, duration]);
+    return value;
+}
+
+function StatCard({ label, value }) {
+    const n = useCountUp(value);
+    return (
+        <div className="statcard" role="status" aria-live="polite">
+            <div className="statcard__value">{n}</div>
+            <div className="statcard__label">{label}</div>
+        </div>
+    );
+}
 
 export default function LandingPage() {
     const [open, setOpen] = useState(false);
     const [submitted, setSubmitted] = useState(false);
-    const dialogRef = useRef(null);
     const firstInputRef = useRef(null);
 
-    // Close modal on ESC
+    // Demo numbers – replace with live data
+    const [interested, setInterested] = useState(128);
+    const [registered, setRegistered] = useState(32);
+
     useEffect(() => {
         function onKey(e) {
             if (e.key === "Escape") setOpen(false);
@@ -16,18 +45,15 @@ export default function LandingPage() {
         return () => window.removeEventListener("keydown", onKey);
     }, [open]);
 
-    // Focus first input when dialog opens
     useEffect(() => {
-        if (open && firstInputRef.current) {
-            firstInputRef.current.focus();
-        }
+        if (open && firstInputRef.current) firstInputRef.current.focus();
     }, [open]);
 
     const onSubmit = (e) => {
         e.preventDefault();
-        // You can replace this with a real POST request
-        // fetch('/api/register-interest', { method: 'POST', body: new FormData(e.target) })
+        // TODO: POST to your backend
         setSubmitted(true);
+        setInterested((v) => v + 1);
         setTimeout(() => {
             setOpen(false);
             setSubmitted(false);
@@ -43,8 +69,13 @@ export default function LandingPage() {
                 <div className="container hero__content">
                     <div className="hero__eyebrow">TORNEO</div>
                     <h1 className="hero__title">FIFA Tournament 2026</h1>
+                    <div class="Prize_Title">
+                        <h1>Prize Pool €800<br /></h1>
+                    </div>
                     <p className="hero__subtitle">
-                        64 giocatori. Bracket a eliminazione. Premi reali. <br className="sm-hide" />
+                        <br />
+                        64 giocatori. Bracket a eliminazione. Premi reali.{" "}
+                        <br className="sm-hide" />
                         Mostra chi è il vero campione!
                     </p>
                     <div className="hero__cta">
@@ -56,44 +87,91 @@ export default function LandingPage() {
                         >
                             I’m interested
                         </button>
-                        <a href="#details" className="btn btn--ghost">Dettagli & Regole</a>
+                        <a href="#details" className="btn btn--ghost">
+                            Dettagli & Regole
+                        </a>
+                        {/* Route to a dedicated fixtures page */}
+                        <a href="/fixtures" className="btn btn--ghost">
+                            See Fixtures
+                        </a>
                     </div>
 
                     <ul className="hero__meta">
-                        <li><strong>Data:</strong> 12–13 Aprile 2026</li>
-                        <li><strong>Formato:</strong> 64 giocatori • Best-of-1 (finale Bo3)</li>
-                        <li><strong>Piattaforma:</strong> PS5</li>
-                        <li><strong>Location:</strong> Torino, IT</li>
+                        <li>
+                            <strong>Data:</strong> 12–13 Aprile 2026
+                        </li>
+                        <li>
+                            <strong>Formato:</strong> 64 giocatori • Bo1 (finale Bo3)
+                        </li>
+                        <li>
+                            <strong>Piattaforma:</strong> PS5
+                        </li>
+                        <li>
+                            <strong>Location:</strong> Torino, IT
+                        </li>
                     </ul>
                 </div>
             </header>
 
-            {/* Features / Details */}
+            {/* Details */}
             <main id="details" className="container section">
                 <div className="grid">
                     <div className="card">
                         <h3>Iscrizione</h3>
-                        <p>Quota d’ingresso trasparente. Posti limitati a 64. Clicca “I’m interested” per prenotare il tuo posto.</p>
+                        <p>
+                            Quota d’ingresso trasparente. Posti limitati a 64. Clicca “I’m
+                            interested” per prenotare il tuo posto.
+                        </p>
                     </div>
                     <div className="card">
                         <h3>Regole rapide</h3>
                         <ul className="list">
-                            <li>Partite 6 minuti per tempo</li>
-                            <li>Squadre attuali, rose aggiornate</li>
-                            <li>Pareggi → tempi supplementari + rigori</li>
+                            <li>6 minuti per tempo</li>
+                            <li>Rose aggiornate, infortuni off</li>
+                            <li>Pareggi → supplementari + rigori</li>
                         </ul>
                     </div>
                     <div className="card">
                         <h3>Premi</h3>
-                        <p>Montepremi distribuito ai primi classificati. Dettagli annunciati all’inizio del torneo.</p>
+                        <p>
+                            Montepremi ai primi classificati. Dettagli annunciati all’inizio
+                            del torneo.
+                        </p>
                     </div>
                 </div>
             </main>
 
+            {/* Stats Band (true full-bleed, no clipping) */}
+            <section className="stats-band full-bleed" aria-labelledby="stats-heading">
+                <div className="stats-band__bg" />
+                <div className="stats-band__inner">
+                    <h2 id="stats-heading" className="sr-only">
+                        Stato registrazioni
+                    </h2>
+
+                    <div className="stats-band__cards">
+                        <StatCard label="Interessati" value={interested} />
+                        <StatCard label="Iscritti" value={registered} />
+                    </div>
+
+                    <div className="stats-band__cta">
+                        <button className="btn btn--primary" onClick={() => setOpen(true)}>
+                            Pre-iscriviti ora
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            {/* Footer */}
             <footer className="footer">
                 <div className="container footer__inner">
-                    <span>Domande? Scrivici: <a href="mailto:organizer@example.com">organizer@example.com</a></span>
-                    <button className="btn btn--small" onClick={() => setOpen(true)}>Pre-iscriviti</button>
+                    <span>
+                        Domande? Scrivici:{" "}
+                        <a href="mailto:organizer@example.com">organizer@example.com</a>
+                    </span>
+                    <button className="btn btn--small" onClick={() => setOpen(true)}>
+                        Pre-iscriviti
+                    </button>
                 </div>
             </footer>
 
@@ -105,9 +183,7 @@ export default function LandingPage() {
                     aria-modal="true"
                     aria-labelledby="dialog-title"
                     id="registration-dialog"
-                    ref={dialogRef}
                     onMouseDown={(e) => {
-                        // click outside closes
                         if (e.target.classList.contains("modal")) setOpen(false);
                     }}
                 >
@@ -123,7 +199,9 @@ export default function LandingPage() {
                         {!submitted ? (
                             <>
                                 <h2 id="dialog-title">Richiesta di registrazione</h2>
-                                <p className="muted">Compila i dati e ti contatteremo per confermare lo slot.</p>
+                                <p className="muted">
+                                    Compila i dati e ti contatteremo per confermare lo slot.
+                                </p>
                                 <form className="form" onSubmit={onSubmit}>
                                     <label className="field">
                                         <span>Nome e Cognome</span>
@@ -158,7 +236,9 @@ export default function LandingPage() {
                                     <div className="field field--row">
                                         <label className="checkbox">
                                             <input type="checkbox" name="consent" required />
-                                            <span>Accetto di essere contattato per conferma e dettagli</span>
+                                            <span>
+                                                Accetto di essere contattato per conferma e dettagli
+                                            </span>
                                         </label>
                                     </div>
 
