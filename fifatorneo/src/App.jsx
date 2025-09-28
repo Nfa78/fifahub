@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useRef } from 'react';
+import Bracket64SplitInteractive from './components/fixtures/bracket64SplitInteractive';
+import LandingPage from './components/pages/landingpage';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const ref = useRef(null);
+
+  const seedNow = () => {
+    const players = Array.from({ length: 64 }, (_, i) => `Player ${i + 1}`);
+    ref.current?.seed(players);
+  };
+
+  const quickDemo = () => {
+    ref.current?.reset();
+    ref.current?.addPlayerAt(0, 'Alex');
+    ref.current?.addPlayerAt(1, 'Sam');
+    ref.current?.wonFirstRound(0, 0); // match 0, top wins
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div style={{ padding: 16 }}>
+      <h1>FIFA Tournament</h1>
+
+      <LandingPage />
+    </div>
+  );
 }
 
-export default App
+/*
+  <Bracket64SplitInteractive
+        ref={ref}
+        autoSeed={false}
+        showConnectors
+        exposeOnWindow={import.meta.env.DEV}  // only expose window API in dev
+      />
+*/

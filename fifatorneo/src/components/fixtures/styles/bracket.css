@@ -1,0 +1,172 @@
+/* ────────────────────────────────────────────────────────────────────────────
+   Neon bracket card
+   - Dark diagonal gradient background
+   - Soft inner highlight
+   - Glowy green border (animated on hover/focus)
+   - Safe defaults for reduced motion & keyboard focus
+   ──────────────────────────────────────────────────────────────────────────── */
+
+:root {
+    --card-bg-1: #0b1020;
+    /* deep navy */
+    --card-bg-2: #141a2b;
+    /* slightly lighter */
+    --card-glow: #22c55e;
+    /* emerald / tailwind-emerald-500 */
+    --card-glow-2: #16a34a;
+    /* slightly darker green */
+    --card-text: #e5e7eb;
+    --card-border: rgba(34, 197, 94, 0.35);
+    --card-shadow: rgba(0, 0, 0, 0.35);
+}
+
+/* Base card */
+.bracket-card {
+    position: relative;
+    color: var(--card-text);
+    border-radius: 14px;
+    padding: 10px 12px;
+
+    /* Dark layered background */
+    background:
+        radial-gradient(120% 140% at 80% 0%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 42%),
+        linear-gradient(145deg, var(--card-bg-1) 0%, var(--card-bg-2) 100%);
+
+    /* Subtle border + outer glow */
+    border: 1px solid var(--card-border);
+    box-shadow:
+        0 6px 14px var(--card-shadow),
+        0 0 0px 0px rgba(34, 197, 94, 0);
+    /* animated on hover */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    font-size: 13px;
+    line-height: 1.35;
+
+    /* Prepare transforms/filters for smooth hover */
+    transform: translateZ(0);
+    transition:
+        transform 220ms cubic-bezier(.2, .7, .2, 1),
+        box-shadow 220ms cubic-bezier(.2, .7, .2, 1),
+        border-color 220ms ease,
+        filter 220ms ease;
+}
+
+/* Inner glow line (top edge) for depth */
+.bracket-card::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+        linear-gradient(180deg, rgba(34, 197, 94, 0.22), rgba(34, 197, 94, 0) 40%);
+    mix-blend-mode: screen;
+    opacity: 0.4;
+    transition: opacity 220ms ease;
+}
+
+/* Neon border ring (animated on hover/focus) */
+.bracket-card::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: -2px;
+    /* expands glow outside border */
+    border-radius: 16px;
+    background:
+        radial-gradient(60% 60% at 50% -10%, rgba(34, 197, 94, 0.45), rgba(34, 197, 94, 0) 70%),
+        radial-gradient(80% 80% at 120% 120%, rgba(22, 163, 74, 0.35), rgba(22, 163, 74, 0) 70%);
+    filter: blur(10px);
+    opacity: 0.0;
+    /* off by default */
+    transition: opacity 220ms ease, filter 220ms ease;
+}
+
+/* Name rows (you can keep as-is) */
+.bracket-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Placeholder style */
+.bracket-name--empty {
+    color: #9CA3AF;
+    font-style: italic;
+}
+
+/* ── Interactions ─────────────────────────────────────────────────────────── */
+
+/* Lift + brighten on hover */
+.bracket-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 10px 22px rgba(0, 0, 0, .45),
+        0 0 14px rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.55);
+    filter: saturate(1.05);
+}
+
+.bracket-card:hover::before {
+    opacity: 0.6;
+}
+
+.bracket-card:hover::after {
+    opacity: 0.9;
+    filter: blur(12px);
+}
+
+/* Keyboard focus ring */
+.bracket-card:focus-visible {
+    outline: none;
+    border-color: rgba(34, 197, 94, 0.9);
+    box-shadow:
+        0 0 0 2px rgba(34, 197, 94, 0.45),
+        0 8px 18px rgba(0, 0, 0, .4);
+}
+
+.bracket-card:focus-visible::after {
+    opacity: 1;
+    filter: blur(14px);
+}
+
+/* Active press feedback */
+.bracket-card:active {
+    transform: translateY(0px) scale(0.995);
+    filter: saturate(1);
+}
+
+/* Optional subtle divider between the two lines */
+.bracket-card .bracket-name+.bracket-name {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed rgba(229, 231, 235, 0.08);
+}
+
+/* ── Motion/contrast safety ───────────────────────────────────────────────── */
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .bracket-card,
+    .bracket-card::before,
+    .bracket-card::after {
+        transition: none !important;
+    }
+}
+
+/* High-contrast-ish fallback (optional) */
+@media (prefers-contrast: more) {
+    .bracket-card {
+        border-color: rgba(34, 197, 94, 0.9);
+    }
+
+    .bracket-card::after {
+        opacity: 0.85;
+        filter: blur(10px);
+    }
+}
