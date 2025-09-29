@@ -1,3 +1,4 @@
+/* ===================== PC / Desktop styles (UNCHANGED) ===================== */
 /* ========== CSS Variables & Base ========== */
 :root {
     --bg: #0b0d14;
@@ -17,14 +18,7 @@
     box-sizing: border-box;
 }
 
-html,
-body,
-#root {
-    height: 100%;
-}
-
 body {
-    margin: 0;
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
     background: radial-gradient(1200px 600px at 20% -10%, #1b2340 0%, #0b0d14 38%) fixed;
     color: var(--text);
@@ -194,7 +188,6 @@ a:hover {
     color: var(--muted);
 }
 
-/* Responsive */
 @media (max-width: 900px) {
     .card {
         grid-column: span 6;
@@ -212,19 +205,14 @@ a:hover {
 }
 
 /* ========== Stats Band (true full-bleed, robust) ========== */
-/* Utility: full-bleed without negative margins (no left clipping) */
 .full-bleed {
     position: relative;
     width: 95vw;
-    /* exact viewport width */
     max-width: 95vw;
-    /* center the 100vw box within any parent */
 }
 
-/* Band visuals */
 .stats-band {
     overflow: hidden;
-    /* keep internal glow within band */
     padding: 44px 0 60px;
     isolation: isolate;
     border-top: 1px solid rgba(255, 255, 255, .06);
@@ -247,7 +235,6 @@ a:hover {
     opacity: .9;
 }
 
-/* Content spans edge-to-edge with safe gutters */
 .stats-band__inner {
     width: 100%;
     padding: 0 24px;
@@ -263,12 +250,9 @@ a:hover {
     gap: 14px;
     align-items: center;
     justify-content: center;
-    /* ⬅️ centers the cards horizontally */
     flex-wrap: wrap;
-    /* ⬅️ keeps them centered when wrapping */
     width: 100%;
 }
-
 
 .stats-band__cta {
     display: flex;
@@ -290,12 +274,9 @@ a:hover {
     padding: 14px 16px;
     border-radius: calc(var(--radius) - 2px);
     backdrop-filter: blur(6px);
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, .10));
+    background: linear-gradient(180deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, .10));
     border: 1px solid rgba(255, 255, 255, .22);
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, .35),
-        inset 0 1px 0 rgba(255, 255, 255, .15);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .15);
     max-width: 150px;
     min-width: 150px;
 }
@@ -308,39 +289,23 @@ a:hover {
     letter-spacing: .03em;
     position: relative;
     display: inline-block;
-    /* gold foil gradient text */
-    background: linear-gradient(90deg,
-            #3b3b3b 0%,
-            #f7d774 18%,
-            #fff2b0 38%,
-            #caa94d 56%,
-            #f5e27a 76%,
-            #3b3b3b 100%);
+    background: linear-gradient(90deg, #3b3b3b 0%, #f7d774 18%, #fff2b0 38%, #caa94d 56%, #f5e27a 76%, #3b3b3b 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-
-    /* soft glow */
     filter: drop-shadow(0 2px 8px rgba(255, 215, 64, .25));
 }
 
-/* animated sheen sweeping across the text */
 .Prize_Title h1::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(115deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0) 40%,
-            rgba(255, 255, 255, .55) 50%,
-            rgba(255, 255, 255, 0) 60%,
-            transparent 100%);
+    background: linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, .55) 50%, rgba(255, 255, 255, 0) 60%, transparent 100%);
     transform: translateX(-120%) skewX(-12deg);
     animation: prize-sheen 3s linear infinite;
     pointer-events: none;
 }
 
-/* glowing underline accent */
 .Prize_Title h1::before {
     content: "";
     position: absolute;
@@ -351,9 +316,7 @@ a:hover {
     height: 3px;
     border-radius: 999px;
     background: linear-gradient(90deg, transparent, #ffd86b, #fff7c2, #ffd86b, transparent);
-    box-shadow:
-        0 0 18px rgba(255, 216, 107, .6),
-        inset 0 0 6px rgba(255, 216, 107, .9);
+    box-shadow: 0 0 18px rgba(255, 216, 107, .6), inset 0 0 6px rgba(255, 216, 107, .9);
 }
 
 @keyframes prize-sheen {
@@ -366,13 +329,11 @@ a:hover {
     }
 }
 
-/* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
     .Prize_Title h1::after {
         animation: none;
     }
 }
-
 
 .statcard__value {
     font-size: clamp(1.8rem, 4vw, 2.4rem);
@@ -388,9 +349,7 @@ a:hover {
 /* ========== Footer ========== */
 .footer {
     border-top: 1px solid rgba(255, 255, 255, .08);
-    background:
-        linear-gradient(180deg, rgba(0, 0, 0, .35), rgba(0, 0, 0, .45)),
-        radial-gradient(800px 200px at 0% 0%, rgba(110, 168, 255, .06), transparent 60%);
+    background: linear-gradient(180deg, rgba(0, 0, 0, .35), rgba(0, 0, 0, .45)), radial-gradient(800px 200px at 0% 0%, rgba(110, 168, 255, .06), transparent 60%);
     backdrop-filter: blur(10px);
 }
 
@@ -403,7 +362,6 @@ a:hover {
     color: var(--muted);
 }
 
-/* ========== Modal ========== */
 /* ========== Modal (scrollable panel) ========== */
 .modal {
     position: fixed;
@@ -412,25 +370,18 @@ a:hover {
     display: grid;
     place-items: center;
     padding: 18px;
-    /* gutter around the panel */
     background: rgba(4, 7, 12, .55);
     backdrop-filter: blur(6px);
     overflow: hidden;
-    /* keep the overlay fixed; panel will scroll */
 }
 
 .modal__panel {
     position: relative;
     width: min(560px, 100%);
     max-height: calc(100dvh - 36px);
-    /* ← key: cap height to viewport minus gutters */
     overflow: auto;
-    /* ← enable scrolling inside the panel */
     -webkit-overflow-scrolling: touch;
-    /* smooth iOS scroll */
     overscroll-behavior: contain;
-    /* prevent scroll chaining to page */
-
     background: linear-gradient(180deg, var(--card), #0f1422);
     border: 1px solid rgba(255, 255, 255, .08);
     border-radius: calc(var(--radius) + 2px);
@@ -438,16 +389,11 @@ a:hover {
     padding: 22px;
 }
 
-/* Close button unchanged */
 .modal__close {
     position: sticky;
-    /* optional: keeps the X visible while scrolling */
     top: 0;
-    /* stick to the top of the scrolling panel */
     margin-left: auto;
-    /* keep it on the right */
     display: block;
-
     font-size: 22px;
     line-height: 1;
     width: 36px;
@@ -462,7 +408,6 @@ a:hover {
 .modal__close:hover {
     background: rgba(255, 255, 255, .1);
 }
-
 
 .muted {
     color: var(--muted);
@@ -523,7 +468,6 @@ input:focus {
     height: 18px;
 }
 
-/* Screen reader only */
 .sr-only {
     position: absolute !important;
     width: 1px;
@@ -544,4 +488,91 @@ input:focus {
 .success h3 {
     margin: 0 0 8px;
     color: var(--primary);
+}
+
+/* ===================== PHONE layout overrides (NEW) ===================== */
+/* Keep desktop as-is; only tweak styles <= 640px for a centered, touch-friendly layout */
+@media (max-width: 640px) {
+
+    /* Use full width bleed for the bottom band on phones */
+    .full-bleed {
+        width: 95vw;
+        max-width: 95vw;
+    }
+
+    /* Softer container padding */
+    .container {
+        padding: 0 16px;
+        max-width: 65vw;
+        margin-bottom: 10%;
+    }
+
+    /* Center hero block */
+    .hero__content {
+        padding: 56px 0;
+        text-align: center;
+        justify-items: center;
+    }
+
+    .Prize_Title {
+        text-align: center;
+    }
+
+    /* keeps gold title centered */
+    .hero__subtitle {
+        margin-top: 8px;
+    }
+
+    /* Stack & center CTAs */
+    .hero__cta {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .hero__cta .btn {
+        width: 60%;
+    }
+
+    /* Center the meta pill list and stack items */
+    .hero__meta {
+        justify-content: center;
+        text-align: start;
+        gap: 10px;
+        flex-direction: column;
+        padding-left: 35px;
+        min-width: 58vw;
+    }
+
+    /* Cards: center text; maintain your spacing */
+    .card {
+        text-align: center;
+    }
+
+    .list {
+        padding-left: 0;
+        list-style-position: inside;
+    }
+
+    /* Stats band: single column, centered cards */
+    .stats-band__inner {
+        grid-template-columns: 1fr;
+        padding: 0 16px;
+    }
+
+    .stats-band__cards {
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .statcard {
+        min-width: 140px;
+        max-width: 200px;
+    }
+
+    /* Footer vertically stacked and centered */
+    .footer__inner {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
 }

@@ -22,12 +22,12 @@ const RIGHT_COLS = 5;
 const FINAL_COLS = 1;
 const COLS = LEFT_COLS + FINAL_COLS + RIGHT_COLS;
 
-const BASE_ROWS_32 = 64;
+const BASE_ROWS_32 = 32;
 const ROW_STEP = 2;
 const TOP_ROWS = 4;
 const HEADER_ROWS = TOP_ROWS * ROW_STEP;
 
-const COL_WIDTH = 240;
+const COL_WIDTH = 112;
 const ROW_HEIGHT = 18;
 const MATCH_ROW_SPAN = 2;
 const H_GAP = 16;
@@ -70,7 +70,7 @@ const styles = {
     connectors: (rows) => ({
         position: 'absolute',
         left: 0,
-        top: 0,
+        top: 16,
         width: `${COLS * (COL_WIDTH + H_GAP)}px`,
         height: `${(rows + HEADER_ROWS) * ROW_HEIGHT}px`,
         pointerEvents: 'none',

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import Bracket64SplitInteractive from '../fixtures/bracket64SplitInteractive';
-
+import './stlyes/fixtures.css'
 export default function FixturesPage() {
     const bracketRef = useRef(null);
 
@@ -17,15 +17,10 @@ export default function FixturesPage() {
     };
 
     return (
-        <div style={{ padding: 16 }}>
-            <h1 style={{ margin: '0 0 12px' }}>Fixtures</h1>
-
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, margin: '12px 0 20px' }}>
-                <button onClick={seedNow}>Seed 64</button>
-                <button onClick={quickDemo}>Quick demo</button>
-                <button onClick={() => bracketRef.current?.reset()}>Reset</button>
-            </div>
-
+        <div style={{ padding: 35, paddingLeft: 45, backgroundColor: "#0b0d14" }}>
+            <a href="/" className="btn btn--ghost">
+                Homepage
+            </a>
             <Bracket64SplitInteractive
                 ref={bracketRef}
                 autoSeed={false}
