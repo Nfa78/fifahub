@@ -496,8 +496,8 @@ input:focus {
 
     /* Use full width bleed for the bottom band on phones */
     .full-bleed {
-        width: 95vw;
-        max-width: 95vw;
+        width: 97vw;
+        max-width: 98vw;
     }
 
     /* Softer container padding */

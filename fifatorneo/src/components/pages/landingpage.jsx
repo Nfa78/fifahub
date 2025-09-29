@@ -3,6 +3,7 @@ import "./stlyes/landingPage.css"; // keeping your path as provided
 
 // ---- import your Supabase API helpers ----
 import { fetchPlayers, createPlayer } from "../../utils/playersAPI"; // adjust path if needed
+import { useNavigate } from "react-router";
 
 function useCountUp(target, duration = 1200) {
     const [value, setValue] = useState(0);
@@ -50,7 +51,7 @@ export default function LandingPage() {
     const [registered, setRegistered] = useState(0);
 
     const [loadingSubmit, setLoadingSubmit] = useState(false);
-
+    const navigate = useNavigate();
     // Load players -> compute counters
     useEffect(() => {
         (async () => {
@@ -163,9 +164,9 @@ export default function LandingPage() {
                             Dettagli & Regole
                         </a>
                         {/* Route to a dedicated fixtures page */}
-                        <a href="/fixtures" className="btn btn--ghost">
+                        <button onClick={() => navigate("/fixtures")} className="btn btn--ghost">
                             See Fixtures
-                        </a>
+                        </button>
                     </div>
 
                     <ul className="hero__meta">
