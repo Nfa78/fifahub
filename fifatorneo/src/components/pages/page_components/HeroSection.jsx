@@ -9,16 +9,23 @@ export default function HeroSection({ setOpen }) {
       <div className="hero__overlay" />
       <div className="container hero__content">
         <div className="hero__eyebrow">TORNEO</div>
-        <h1 className="hero__title">FIFA Tournament 2026</h1>
 
+        {/* TITLE: refined gradient, subtle stroke + glow */}
+        <h1 className="hero__title">
+          <span className="hero__title-inner">FIFA Tournament 2026</span>
+        </h1>
+
+        {/* PRIZE: stronger gold, sparkle detail, small badge */}
         <div className="Prize_Title">
-          <h1>720€ MONTEPREMI<br /></h1>
+          <h1>
+            €720 MONTEPREMI
+            <span className="prize__sparkles" aria-hidden="true" />
+          </h1>
         </div>
 
-        <h3>📍Pasha ristorante<br />San Salvario,Torino</h3>
+        <h3>📍 Pasha Ristorante<br />San Salvario, Torino</h3>
 
         <p className="hero__subtitle">
-          <br />
           64 giocatori. Bracket a eliminazione. Premi reali.{" "}
           <br className="sm-hide" />
           Mostra chi è il vero campione!

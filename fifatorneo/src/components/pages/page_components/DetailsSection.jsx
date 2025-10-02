@@ -7,8 +7,7 @@ export default function DetailsSection() {
         <div className="card">
           <h3>Iscrizione</h3>
           <p>
-            Quota d’ingresso trasparente. Posti limitati a 64. 
-            Clicca “I’m interested” per prenotare il tuo posto.
+            After you submit your registry form, we will contact you once the date and final details are set, and we will inform you of the payment modality.
           </p>
         </div>
         <div className="card">
