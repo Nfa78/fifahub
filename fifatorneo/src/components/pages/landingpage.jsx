@@ -219,8 +219,8 @@ export default function LandingPage() {
                     </h2>
 
                     <div className="stats-band__cards">
-                        <StatCard label="Interessati" value={interested + 38} />
-                        <StatCard label="Iscritti" value={registered} />
+                        <StatCard label="Interessati" value={interested + 28} />
+                        <StatCard label="Iscritti" value={registered + 2} />
                     </div>
 
                     <div className="stats-band__cta">
