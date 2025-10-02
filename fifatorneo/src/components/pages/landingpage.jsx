@@ -7,6 +7,8 @@ import DetailsSection from "./page_components/DetailsSection";
 import StatsSection from "./page_components/StatsSection";
 import FooterSection from "./page_components/FooterSection";
 import RegistryModal from "./page_components/RegistryModal";
+import { supabase } from "../../utils/supabaseClient";
+import { splitFullName } from "../../utils/name";
 
 export default function LandingPage() {
   const [open, setOpen] = useState(false);
@@ -43,33 +45,47 @@ export default function LandingPage() {
 
     try {
       const fd = new FormData(e.currentTarget);
-      const fullName = fd.get("fullName");
-      const email = fd.get("email");
+      const fullName = fd.get("fullName")?.trim();
+      const email = fd.get("email")?.trim();
       const q1 = fd.get("question 1") || "";
       const q2 = fd.get("question 2 ") || "";
       const q3 = fd.get("Question 3") || "";
       const phn = fd.get("phoneNumber") || "";
 
-      await createPlayer({
-        name: fullName,
-        surname: "",
+      const { name, surname } = splitFullName(fullName);
+      // 1) Ask Supabase to email a magic link / OTP
+      const { error } = await supabase.auth.signInWithOtp({
         email,
-        phone_number: phn,
-        a1: q1,
-        a2: q2,
-        a3: q3,
+        options: { shouldCreateUser: true },
       });
+      if (error) throw error;
 
-      setInterested((v) => v + 1);
+      // 2) Stash the form data locally until the user confirms the email
+      sessionStorage.setItem(
+        "pending_registration",
+        JSON.stringify({
+          name,
+          surname,
+          email,
+          phone_number: phn,
+          a1: q1,
+          a2: q2,
+          a3: q3,
+        })
+      );
+
+      // 3) UI feedback – tell user to check email (keep your modal behavior if you want)
       setSubmitted(true);
-
       setTimeout(() => {
         setOpen(false);
         setSubmitted(false);
         e.currentTarget.reset();
       }, 1200);
+
+      // Optionally route to a “Check your email” page
+      // navigate('/check-email');
     } catch (err) {
-      console.error("Create player failed:", err);
+      console.error("Email sign-in failed:", err);
     } finally {
       setLoadingSubmit(false);
     }
@@ -79,7 +95,11 @@ export default function LandingPage() {
     <div className="page">
       <HeroSection setOpen={setOpen} />
       <DetailsSection />
-      <StatsSection interested={interested} registered={registered} setOpen={setOpen} />
+      <StatsSection
+        interested={interested}
+        registered={registered}
+        setOpen={setOpen}
+      />
       <FooterSection setOpen={setOpen} />
       <RegistryModal
         open={open}
