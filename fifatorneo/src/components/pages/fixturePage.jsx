@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import Bracket64SplitInteractive from "../fixtures/bracket64SplitInteractive";
 import "./stlyes/fixtures.css";
+import { useNavigate } from "react-router";
 export default function FixturesPage() {
   const bracketRef = useRef(null);
 
@@ -15,12 +16,12 @@ export default function FixturesPage() {
     bracketRef.current?.addPlayerAt(1, "Sam");
     bracketRef.current?.wonFirstRound(0, 0); // match 0, top wins
   };
-
+  const navigate = useNavigate();
   return (
     <div style={{ padding: 35, paddingLeft: 45, backgroundColor: "#0b0d14" }}>
-      <a href="/" className="btn btn--ghost">
+      <button onClick={() => navigate("/")} className="btn btn--ghost">
         Homepage
-      </a>
+      </button>
       <Bracket64SplitInteractive
         ref={bracketRef}
         autoSeed={false}

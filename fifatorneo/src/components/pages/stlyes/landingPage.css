@@ -568,11 +568,10 @@ input:focus {
     max-width: 95vw;
   }
 
-  /* Softer container padding */
-  .container {
-    padding: 0 16px;
-    max-width: 65vw;
-    margin-bottom: 10%;
+  /* Use full width bleed for the bottom band on phones */
+  .full-bleed {
+    width: 97vw;
+    max-width: 98vw;
   }
 
   /* Center hero block */

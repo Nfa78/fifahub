@@ -3,6 +3,7 @@ import Bracket64SplitInteractive from "./components/fixtures/bracket64SplitInter
 import LandingPage from "./components/pages/landingpage";
 import { Route, Routes } from "react-router";
 import FixturesPage from "./components/pages/fixturePage";
+import PlayersPage from "./components/pages/PlayersPage";
 
 export default function App() {
   const ref = useRef(null);
@@ -27,6 +28,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/fixtures" element={<FixturesPage />} />
+        <Route path="/myTicket" element={<PlayersPage />} />
+
       </Routes>
     </div>
   );
