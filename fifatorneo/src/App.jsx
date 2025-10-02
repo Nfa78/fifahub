@@ -23,8 +23,7 @@ export default function App() {
  */
 
   return (
-    <div style={{ padding: 16 }}>
-      <h1>FIFA Tournament</h1>
+    <div>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/fixtures" element={<FixturesPage />} />
