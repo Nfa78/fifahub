@@ -7,7 +7,6 @@ import PlayersPage from "./components/pages/PlayersPage";
 
 export default function App() {
   const ref = useRef(null);
-
   /*
  const seedNow = () => {
    const players = Array.from({ length: 64 }, (_, i) => `Player ${i + 1}`);
@@ -29,7 +28,6 @@ export default function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/fixtures" element={<FixturesPage />} />
         <Route path="/myTicket" element={<PlayersPage />} />
-
       </Routes>
     </div>
   );
