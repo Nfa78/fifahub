@@ -12,6 +12,7 @@
   "dependencies": {
     "@replydev/react-tournament-brackets": "^1.0.1",
     "@supabase/supabase-js": "^2.58.0",
+    "qrcode.react": "^4.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^7.9.3",
