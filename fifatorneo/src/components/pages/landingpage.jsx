@@ -47,32 +47,28 @@ export default function LandingPage() {
       const fd = new FormData(e.currentTarget);
       const fullName = fd.get("fullName")?.trim();
       const email = fd.get("email")?.trim();
-      const q1 = fd.get("question 1") || "";
-      const q2 = fd.get("question 2 ") || "";
-      const q3 = fd.get("Question 3") || "";
-      const phn = fd.get("phoneNumber") || "";
+      const a1 = fd.get("question 1") || "";
+      const a2 = fd.get("question 2 ") || "";
+      const a3 = fd.get("Question 3") || "";
+      const phone_number = fd.get("phoneNumber") || "";
 
-      const { name, surname } = splitFullName(fullName);
       // 1) Ask Supabase to email a magic link / OTP
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: { shouldCreateUser: true },
       });
       if (error) throw error;
-
+      const { name, surname } = splitFullName(fullName);
+      await createPlayer({
+        name,
+        surname,
+        email,
+        phone_number,
+        a1,
+        a2,
+        a3,
+      });
       // 2) Stash the form data locally until the user confirms the email
-      sessionStorage.setItem(
-        "pending_registration",
-        JSON.stringify({
-          name,
-          surname,
-          email,
-          phone_number: phn,
-          a1: q1,
-          a2: q2,
-          a3: q3,
-        })
-      );
 
       // 3) UI feedback – tell user to check email (keep your modal behavior if you want)
       setSubmitted(true);
